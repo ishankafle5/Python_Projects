@@ -9,7 +9,7 @@ cap.set(3,wCam)
 cap.set(4,hCam)
 folderPath="Images"
 mylist=os.listdir(folderPath)
-print(mylist)
+# print(mylist)
 overlayList=[]
 for imagePath in mylist:
 
@@ -30,7 +30,11 @@ while True:
     lmList=detector.findPosition(img,draw=False)
     if len(lmList) != 0:
         finger=[]
-        for i in range(0,5):
+
+        if lmList[tipid[0]][1] < lmList[tipid[0]-1][1]:
+                finger.append(1)
+        else:finger.append(0)
+        for i in range(1,5):
             if lmList[tipid[i]][2] < lmList[tipid[i]-2][2]:
 
                 finger.append(1)
@@ -38,21 +42,22 @@ while True:
             else:
                 finger.append(0)
         
-        print(finger)
-        time.sleep(1)
+        # print(finger)
 
-        # if(lmList[8][2] < lmList[6][2]):
-        #     print("Index finger is up")
+        totalfinger=finger.count(1)
 
-        # if (lmList[8]  [2] < lmList[6][2]) and (lmList[12][2] < lmList[10][2]) and  (lmList[16][2] < lmList[14][2]):
-        #     print("Index finger open")
-            # break
+        print(totalfinger)
 
 
+        for i in finger:
+            if i==1:
+                pass
+
+ 
     # print(lmList)
-    h,w,c=overlayList[0].shape
-    print(h,w,c)
-    img[0:h,0:w]=overlayList[0]
+        h,w,c=overlayList[totalfinger-1].shape
+    # print(h,w,c)
+        img[0:h,0:w]=overlayList[totalfinger-1]
 
     cTime=time.time()
     fps=1/(cTime-pTime)
